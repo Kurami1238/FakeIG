@@ -1,0 +1,42 @@
+﻿@model FakeIG.Models.PostAndMember
+
+<div class="col-12 col-md-10" style="margin-top:10px;">
+    <div class="img-thumbnail">
+        <div class="col-12 col-md-10">
+            <img src="@Model.PicPath" class="img-circle col-2 col-md-2" style="height:30px" />
+            <p class="col-2 col-md-2">@Model.Name</p>
+        </div>
+        <div class="col-12 col-md-10">
+            @foreach (var item in Model.ImgPathList)
+            {
+                <img src="@item.ImgPath" class="img-responsive" />
+            }
+        </div>
+        <div class="col-12 col-md-10">
+            <button id="nice" value="Nice" class="btn-default"></button>
+            <button id="reply" value="回覆" class="btn-default"></button>
+            <button id="give" value="分享" class="btn-default"></button>
+        </div>
+        <div class="col-12 col-md-10">
+            <p>@Model.Nice 人已讚</p>
+        </div>
+        <div class="col-12 col-md-10">
+            <a href="/Post/Display/@Model.PostID">
+                <p>觀看 @Model.PointList.Count 則留言</p>
+            </a>
+        </div>
+        <div class="col-12 col-md-10">
+            <a href="/Post/Display/@Model.PostID">
+                <p>@PostHelper.GetDay(@Model.CreateTime)</p>
+            </a>
+        </div>
+        <div class="col-12 col-md-10">
+            <form action="/Post/Reply">
+                <input class="col-8 col-md-8" type="text" name="reply" placeholder="留言.." />
+                <input class="col-3 col-md-3" type="submit" value="留言" />
+            </form>
+        </div>
+
+    </div>
+
+</div>

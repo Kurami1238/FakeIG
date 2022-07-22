@@ -1,0 +1,23 @@
+﻿@model FakeIG.Models.MainModel
+@{
+    ViewBag.Title = "Index";
+    ViewBag.Member = Model.Member;
+}
+
+@{
+    if (Model.PAMList.Count > 1)
+    {
+        <div class="col-10 col-md-10">
+            @foreach (var item in Model.PAMList)
+            {
+                @Html.Partial("_PostPartail", item)
+            }
+
+        </div>
+    }
+    else
+    {
+        <p>尚未有資料</p>
+    }
+}
+

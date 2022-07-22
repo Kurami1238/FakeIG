@@ -1,0 +1,187 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="FakeIGModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ImagePath">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ImgPath" Type="varchar" MaxLength="300" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Account" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Birthday" Type="datetime" Nullable="false" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="PicPath" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="NiceList">
+          <Key>
+            <PropertyRef Name="MemberID" />
+            <PropertyRef Name="PostID" />
+            <PropertyRef Name="Yes" />
+            <PropertyRef Name="Readed" />
+          </Key>
+          <Property Name="MemberID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PostID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Yes" Type="bit" Nullable="false" />
+          <Property Name="Readed" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="MemberID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PointID" Type="uniqueidentifier" />
+          <Property Name="CreateTime" Type="datetime" Nullable="false" />
+          <Property Name="LastEditTime" Type="datetime" Nullable="false" />
+          <Property Name="Contents" Type="varchar" MaxLength="200" Nullable="false" />
+          <Property Name="Nice" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="FakeIGModelStoreContainer">
+          <EntitySet Name="ImagePath" EntityType="Self.ImagePath" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="NiceList" EntityType="Self.NiceList" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FakeIGModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ImagePath">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="Guid" Nullable="false" />
+          <Property Name="ImgPath" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Member">
+          <Key>
+            <PropertyRef Name="MemberID" />
+          </Key>
+          <Property Name="MemberID" Type="Guid" Nullable="false" />
+          <Property Name="Account" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Birthday" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="PicPath" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="NiceList">
+          <Key>
+            <PropertyRef Name="MemberID" />
+            <PropertyRef Name="PostID" />
+            <PropertyRef Name="Yes" />
+            <PropertyRef Name="Readed" />
+          </Key>
+          <Property Name="MemberID" Type="Guid" Nullable="false" />
+          <Property Name="PostID" Type="Guid" Nullable="false" />
+          <Property Name="Yes" Type="Boolean" Nullable="false" />
+          <Property Name="Readed" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Post">
+          <Key>
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="PostID" Type="Guid" Nullable="false" />
+          <Property Name="MemberID" Type="Guid" Nullable="false" />
+          <Property Name="PointID" Type="Guid" />
+          <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="LastEditTime" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="Contents" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Nice" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="FakeIGEntities2" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ImagePath" EntityType="Self.ImagePath" />
+          <EntitySet Name="Member" EntityType="Self.Member" />
+          <EntitySet Name="NiceList" EntityType="Self.NiceList" />
+          <EntitySet Name="Post" EntityType="Self.Post" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="FakeIGModelStoreContainer" CdmEntityContainer="FakeIGEntities2">
+          <EntitySetMapping Name="ImagePath">
+            <EntityTypeMapping TypeName="FakeIGModel.ImagePath">
+              <MappingFragment StoreEntitySet="ImagePath">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Member">
+            <EntityTypeMapping TypeName="FakeIGModel.Member">
+              <MappingFragment StoreEntitySet="Member">
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="Account" ColumnName="Account" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Birthday" ColumnName="Birthday" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="PicPath" ColumnName="PicPath" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="NiceList">
+            <EntityTypeMapping TypeName="FakeIGModel.NiceList">
+              <MappingFragment StoreEntitySet="NiceList">
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="Yes" ColumnName="Yes" />
+                <ScalarProperty Name="Readed" ColumnName="Readed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Post">
+            <EntityTypeMapping TypeName="FakeIGModel.Post">
+              <MappingFragment StoreEntitySet="Post">
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="PointID" ColumnName="PointID" />
+                <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
+                <ScalarProperty Name="LastEditTime" ColumnName="LastEditTime" />
+                <ScalarProperty Name="Contents" ColumnName="Contents" />
+                <ScalarProperty Name="Nice" ColumnName="Nice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

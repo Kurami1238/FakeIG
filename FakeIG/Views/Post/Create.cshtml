@@ -1,0 +1,86 @@
+﻿@model FakeIG.Models.Post
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>新貼文</h2>
+
+<form class="form-horizontal" method="post" action="/Post/CreateImg" enctype="multipart/form-data">
+    <div>
+        <p>上傳檔案 1:<input type="file" name="photo" /></p>
+        <p>上傳檔案 2:<input type="file" name="photo" /></p>
+        <p>上傳檔案 3:<input type="file" name="photo" /></p>
+        <input type="submit" value="檔案上傳" />
+    </div>
+
+</form>
+@using (Html.BeginForm())
+{
+    <div>
+        <p>上傳檔案 1:<input type="file" name="photo" /></p>
+        <input type="submit" value="檔案上傳" />
+    </div>
+}
+
+@{
+    if (ViewBag.ImgPath != null)
+    {
+        <div class="img-thumbnail">
+            @foreach (var item in ViewBag.ImgPath)
+            {
+                <img src="@item" class="img-responsive" />
+            }
+        </div>
+    }
+}
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Contents, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <textarea name="contents" placeholder="輸入內文" cols="500" rows="10"></textarea>
+            </div>
+        </div>
+        @{
+            string path = "";
+            if (ViewBag.ImgPath != null)
+            {
+
+                for (int i = 0; i < @ViewBag.ImgPath.Length; i++)
+                {
+                    if (i != @ViewBag.ImgPath.Length)
+                    {
+                        path += @ViewBag.ImgPath[i] + ";";
+                    }
+                    else
+                    {
+                        path += @ViewBag.ImgPath[i];
+                    }
+                }
+                <input type="hidden" name="imgpath" value="@path" />
+            }
+        }
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="新增" class="btn btn-dark" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("返回首頁", "Index", "Main")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

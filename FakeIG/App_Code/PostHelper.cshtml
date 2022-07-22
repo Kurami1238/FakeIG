@@ -1,0 +1,21 @@
+﻿@helper GetDay(DateTime day)
+{
+    if ((DateTime.Now - day).Days < 1)
+    {
+        <span>
+            @{
+                var h = (DateTime.Now - day).Hours;
+            }
+            @h 小時前
+        </span>
+    }
+    else
+    {
+        <span>
+             @{
+                var d = (DateTime.Now - day).Days;
+            }
+            @d 天前 
+        </span>
+    }
+}

@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Instagram</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body class="bg-dark">
+    <nav class="navbar navbar-expand-lg navbar-expand-md navbar-expand-sm navbar-expand">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="/Main/Index">
+                <img src="~/Images/brand2.png" alt="" width="165" height="50" class="d-inline-block" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarScroll">
+                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style="--bs-scroll-height: 100px;">
+                    <li class="nav-item flex">
+                        <a class="nav-link active" aria-current="page" href="/Main/Index">
+                            <img src="~/Images/home.png" width="50" height="50" class="align-bottom" />
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Main/Index">
+                            <img src="~/Images/message.png" width="50" height="50" class="align-bottom" />
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/Post/Create">
+                            <img src="~/Images/add.png" width="50" height="50" class="align-bottom" />
+                        </a>
+                    </li>
+
+                </ul>
+                <form class="d-flex">
+                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success" type="submit">Search</button>
+                </form>
+                @{
+                    if (@ViewBag.Member != null)
+                    {
+                            <ul class="navbar-nav navbar-nav-scroll d-flex">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="@((@ViewBag.Member.PicPath)!= null ?@ViewBag.Member.PicPath :"/Images/defaltpic.jpg")" width="30" height="30" class="align-bottom" />
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuLink">
+                                        <li><a class="dropdown-item" href="#">Action</a></li>
+                                        <li><a class="dropdown-item" href="#">Another action</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                    }
+                    else
+                    {
+                        <input type="button" value="登入" onclick="location.href='/Member/Login'" class="btn btn-dark" />
+                    }
+                }
+            </div>
+        </div>
+    </nav>
+    @*<div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+
+                    </button>
+                    @Html.ActionLink("應用程式名稱", "Index", "Main", new { area = "" }, new { @class = "navbar-brand" })
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li>@Html.ActionLink("首頁", "Index", "Main")</li>
+                        <li>@Html.ActionLink("新增貼文", "Create", "Post")</li>
+                        <li>@Html.ActionLink("All", "Index", "Main")</li>
+                    </ul>
+                </div>
+                @{
+                    if (@ViewBag.Member != null)
+                    {
+                        <div class="d-flex" style="border:1px #ffffff">
+                            <img src="@ViewBag.Member.PicPath" style="height:5px" />
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="d-flex" style="border:1px #ffffff">
+                            <input type="button" value="登入" onclick="location.href='/Member/Login'" class="btn" />
+                        </div>
+                    }
+                }
+            </div>
+        </div>*@
+    <div class="container body-content ">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 應用程式</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
