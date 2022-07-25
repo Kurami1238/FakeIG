@@ -20,6 +20,9 @@ namespace FakeIG.Controllers
         {
             Member member = (Member)Session["Member"];
             // 找最近更新的文章
+            //var postList = _db.Post
+            //    .OrderByDescending(m => m.CreateTime)
+            //    .Take(_pageSize).ToList();
             var PAMList = _pm.DisplayPostList(member, _pageSize);
             var mm = new MainModel()
             {

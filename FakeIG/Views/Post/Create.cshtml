@@ -5,36 +5,77 @@
 }
 
 <h2>新貼文</h2>
-
-<form class="form-horizontal" method="post" action="/Post/CreateImg" enctype="multipart/form-data">
-    <div>
-        <p>上傳檔案 1:<input type="file" name="photo" /></p>
-        <p>上傳檔案 2:<input type="file" name="photo" /></p>
-        <p>上傳檔案 3:<input type="file" name="photo" /></p>
-        <input type="submit" value="檔案上傳" />
-    </div>
-
-</form>
-@using (Html.BeginForm())
-{
-    <div>
-        <p>上傳檔案 1:<input type="file" name="photo" /></p>
-        <input type="submit" value="檔案上傳" />
-    </div>
-}
-
 @{
+    if (ViewBag.ImgPath == null)
+    {
+
+        <form class="form-horizontal" method="post" action="/Post/CreateImg" enctype="multipart/form-data">
+            <div>
+                <p>上傳檔案 1:<input type="file" name="photo" /></p>
+                <p>上傳檔案 2:<input type="file" name="photo" /></p>
+                <p>上傳檔案 3:<input type="file" name="photo" /></p>
+                <input type="submit" value="檔案上傳" />
+            </div>
+
+        </form>
+    }
     if (ViewBag.ImgPath != null)
     {
-        <div class="img-thumbnail">
-            @foreach (var item in ViewBag.ImgPath)
-            {
-                <img src="@item" class="img-responsive" />
+        @*<div class="img-thumbnail">
+                @foreach (var item in ViewBag.ImgPath)
+                {
+                    <img src="@item" class="img-responsive" />
+                }
+            </div>*@
+        <div id="carouselExampleIndicators" class="carousel slide col-6 col-md-6 col-lg-6" data-bs-ride="carousel">
+            <div class="carousel-indicators">
+                @for (int i = 0; i < ViewBag.ImgPath.Count; i++)
+                {
+                    if (i == 0)
+                    {
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" class="active" aria-current="true" aria-label="Slide @i"></button>
+                    }
+                    else
+                    {
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" aria-current="true" aria-label="Slide @i"></button>
+                    }
+                }
+            </div>
+            <div class="carousel-inner">
+                @for (int i = 0; i < ViewBag.ImgPath.Count; i++)
+                {
+
+                    if (i == 0)
+                    {
+                        <div class="carousel-item active">
+                            <img src="@ViewBag.ImgPath[i]" class="d-block w-100" alt="...">
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="carousel-item">
+                            <img src="@ViewBag.ImgPath[i]" class="d-block w-100" alt="...">
+                        </div>
+                    }
+                }
+            </div>
+            @{
+                if (ViewBag.ImgPath.Count != 1)
+                {
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
+                }
             }
         </div>
     }
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm("Create","Post"))
 {
     @Html.AntiForgeryToken()
 
@@ -54,15 +95,15 @@
             if (ViewBag.ImgPath != null)
             {
 
-                for (int i = 0; i < @ViewBag.ImgPath.Length; i++)
+                for (int i = 0; i < @ViewBag.ImgPath.Count; i++)
                 {
-                    if (i != @ViewBag.ImgPath.Length)
+                    if ((i + 1) == @ViewBag.ImgPath.Count)
                     {
-                        path += @ViewBag.ImgPath[i] + ";";
+                        path += @ViewBag.ImgPath[i];
                     }
                     else
                     {
-                        path += @ViewBag.ImgPath[i];
+                        path += @ViewBag.ImgPath[i] + ";";
                     }
                 }
                 <input type="hidden" name="imgpath" value="@path" />

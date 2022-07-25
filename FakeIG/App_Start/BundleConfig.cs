@@ -19,12 +19,19 @@ namespace FakeIG
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap-*"));
-
+            //bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
+            //          "~/Scripts/bootstrap*"));
+             
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css"));
+            BundleTable.EnableOptimizations = true;
+
+            //var axiosCdnPath = "https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js";
+            //bundles.Add(new StyleBundle("~/Content/axios", axiosCdnPath));
+            bundles.Add(new StyleBundle("~/Content/axios").Include("~/Scripts/axios.js"));
+
+
         }
     }
 }

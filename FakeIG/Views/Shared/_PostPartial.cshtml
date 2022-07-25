@@ -1,42 +1,101 @@
 ﻿@model FakeIG.Models.PostAndMember
+@{
+    Guid postID = @Model.PostID;
+}
 
-<div class="col-12 col-md-10" style="margin-top:10px;">
-    <div class="img-thumbnail">
-        <div class="col-12 col-md-10">
-            <img src="@Model.PicPath" class="img-circle col-2 col-md-2" style="height:30px" />
-            <p class="col-2 col-md-2">@Model.Name</p>
-        </div>
-        <div class="col-12 col-md-10">
-            @foreach (var item in Model.ImgPathList)
-            {
-                <img src="@item.ImgPath" class="img-responsive" />
-            }
-        </div>
-        <div class="col-12 col-md-10">
-            <button id="nice" value="Nice" class="btn-default"></button>
-            <button id="reply" value="回覆" class="btn-default"></button>
-            <button id="give" value="分享" class="btn-default"></button>
-        </div>
-        <div class="col-12 col-md-10">
-            <p>@Model.Nice 人已讚</p>
-        </div>
-        <div class="col-12 col-md-10">
-            <a href="/Post/Display/@Model.PostID">
-                <p>觀看 @Model.PointList.Count 則留言</p>
-            </a>
-        </div>
-        <div class="col-12 col-md-10">
-            <a href="/Post/Display/@Model.PostID">
-                <p>@PostHelper.GetDay(@Model.CreateTime)</p>
-            </a>
-        </div>
-        <div class="col-12 col-md-10">
-            <form action="/Post/Reply">
-                <input class="col-8 col-md-8" type="text" name="reply" placeholder="留言.." />
-                <input class="col-3 col-md-3" type="submit" value="留言" />
-            </form>
-        </div>
+<div class="col-12 col-md-12" style="margin-top:10px; ">
+    <div class="card" style="width: 470px; border:1px solid #515151; border-radius: 10px; ">
+        <div>
+            <div style="margin:15px;">
+                <img src="@Model.PicPath" class="img-circle col-2 col-md-2" style="height:30px;width:30px;border-radius:50%;" />
+                <span>@Model.Name</span>
+            </div>
+            <div>
+                <div id="carouselExampleIndicators" class="carousel slide carousel-fade" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        @for (int i = 0; i < Model.ImgPathList.Count; i++)
+                        {
+                            if (i == 0)
+                            {
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" class="active" aria-current="true" aria-label="Slide @i"></button>
+                            }
+                            else
+                            {
+                                <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="@i" aria-current="true" aria-label="Slide @i"></button>
+                            }
+                        }
+                    </div>
+                    <div class="carousel-inner" style="height:585px; width:468px;">
+                        @for (int i = 0; i < Model.ImgPathList.Count; i++)
+                        {
 
+                            if (i == 0)
+                            {
+                                <div class="carousel-item active">
+                                    <img src="@Model.ImgPathList[i].ImgPath" alt="..." style="max-width: 100%; max-height: 100%;">
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="carousel-item">
+                                    <img src="@Model.ImgPathList[i].ImgPath" alt="..." style="max-width: 100%; max-height: 100%;">
+                                </div>
+                            }
+                        }
+                    </div>
+                    @{
+                        if (Model.ImgPathList.Count != 1)
+                        {
+                            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        }
+                    }
+                </div>
+            </div>
+            <div style="margin-left:10px;">
+                <div>
+                    <button class="btn" type="button">
+                        <img src="~/Images/like.png" width="25" height="25" class="align-bottom" />
+                    </button>
+                    <button class="btn" type="button" for="reply">
+                        <img src="~/Images/message.png" width="25" height="25" class="align-bottom" />
+                    </button>
+                    <button class="btn" type="button">
+                        <img src="~/Images/share.png" width="25" height="25" class="align-bottom" />
+                    </button>
+                </div>
+                <div>
+                    <p>@Model.Nice 個讚</p>
+                </div>
+                <div>
+                    <a href="/Post/Display?postID=@postID">
+                        <p>觀看 @Model.PointList.Count 則留言</p>
+                    </a>
+                </div>
+                <div>
+                    <a href="/Post/Display?postID=@postID">
+                        <p class="CreateTime">@PostHelper.GetDay(@Model.CreateTime)</p>
+                    </a>
+                </div>
+            </div>
+            <div style="margin-bottom: 10px; margin-left: 10px;">
+                <hr />
+                <form action="/Post/Reply" method="post">
+                    <div class="input-group mb-3 col-8 col-md-8">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon1">☺</button>
+                        <input type="text" class="form-control" name="reply" id="reply" placeholder="留言.." aria-label="" aria-describedby="button-addon1">
+                        <input type="hidden" name="pointID" value="@Model.PostID" />
+                        <input class="btn" type="submit" value="投稿" />
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
 
 </div>

@@ -60,7 +60,7 @@ namespace FakeIG.Controllers
 
             _db.SaveChanges();
 
-            return RedirectToAction("Display", post.PostID);
+            return RedirectToAction("Display", new { postID = post.PostID });
         }
 
         /// <summary> 上傳圖片/// </summary>
@@ -76,7 +76,7 @@ namespace FakeIG.Controllers
             ViewBag.Member = member;
 
             string folderPath = Const.consts.folderPath;
-            folderPath = HostingEnvironment.MapPath(folderPath);
+            //folderPath = HostingEnvironment.MapPath(folderPath);
             List<string> ImgPath = new List<string>();
             for (int i = 0; i < photo.Length; i++)
             {
@@ -89,14 +89,16 @@ namespace FakeIG.Controllers
                             Directory.CreateDirectory(folderPath);
                         fileName = "P" + DateTime.Now.ToString("yyyyMMdd_HHmmss_FFFFFF") + "_" + member.Account + "_" + random.Next(100000).ToString("00000") + Path.GetExtension(f.FileName);
                                                
-                        var path = Path.Combine(folderPath, fileName);
+                        var path = Path.Combine(Server.MapPath($"{folderPath}"), fileName);
                         f.SaveAs(path);
-                        ImgPath.Add(path);
+
+                        var viewPath = Path.Combine(folderPath, fileName);
+                        ImgPath.Add(viewPath);
                     }
                 }
             }
             ViewBag.ImgPath = ImgPath;
-            return View();
+            return View("Create");
         }
 
         ///// <summary> 上傳圖片/// </summary>
@@ -131,16 +133,57 @@ namespace FakeIG.Controllers
 
         public ActionResult Display(Guid postID)
         {
-            Member member = (Member)Session["Member"];
-            ViewBag.Member = member;
+                Member member = (Member)Session["Member"];
+                ViewBag.Member = member;
 
-            var PAM = _pm.DisplayPost(member, postID);
-            MainModel mm = new MainModel()
+
+                var PAM = _pm.DisplayPost(member, postID);
+                MainModel mm = new MainModel()
+                {
+                    PAM = PAM,
+                    Member = member
+                };
+                return View(mm);
+        }
+
+        [HttpPost]
+        public ActionResult Reply(Guid pointID,string reply)
+        {
+            Member member = (Member)Session["Member"];
+
+            var pointPost = new Post()
             {
-                PAM = PAM,
-                Member = member
+                PostID = Guid.NewGuid(),
+                PointID = pointID,
+                MemberID = member.MemberID,
+                CreateTime = DateTime.Now,
+                LastEditTime = DateTime.Now,
+                Contents = reply,
+                Nice = 0,
             };
-            return View(mm);
+            _db.Post.Add(pointPost);
+            _db.SaveChanges(); 
+            return RedirectToAction("Display", new { postID = pointPost.PointID });
+        }
+
+        
+        public string Like(Guid memberID,Guid postID)
+        {
+            var kiroku = _db.NiceList.Where(m => m.MemberID == memberID && m.PostID == postID).FirstOrDefault();
+            if (kiroku == null)
+            {
+                var nice = new NiceList()
+                {
+                    MemberID = memberID,
+                    PostID = postID,
+                    Yes = true,
+                    Readed = true,
+                };
+                _db.NiceList.Add(nice);
+                _db.SaveChanges();
+            }
+            
+            return "OK";
         }
     }
 }

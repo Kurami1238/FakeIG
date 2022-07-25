@@ -16,5 +16,6 @@ namespace FakeIG.Models
     {
         public System.Guid PostID { get; set; }
         public string ImgPath { get; set; }
+        public int ImgPathID { get; set; }
     }
 }

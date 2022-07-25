@@ -4,13 +4,14 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="FakeIGModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="FakeIGModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="ImagePath">
           <Key>
-            <PropertyRef Name="PostID" />
+            <PropertyRef Name="ImgPathID" />
           </Key>
           <Property Name="PostID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="ImgPath" Type="varchar" MaxLength="300" Nullable="false" />
+          <Property Name="ImgPathID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
         </EntityType>
         <EntityType Name="Member">
           <Key>
@@ -55,17 +56,17 @@
           <EntitySet Name="NiceList" EntityType="Self.NiceList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="FakeIGModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="ImagePath">
           <Key>
-            <PropertyRef Name="PostID" />
+            <PropertyRef Name="ImgPathID" />
           </Key>
           <Property Name="PostID" Type="Guid" Nullable="false" />
           <Property Name="ImgPath" Type="String" MaxLength="300" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ImgPathID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
         </EntityType>
         <EntityType Name="Member">
           <Key>
@@ -119,6 +120,7 @@
           <EntitySetMapping Name="ImagePath">
             <EntityTypeMapping TypeName="FakeIGModel.ImagePath">
               <MappingFragment StoreEntitySet="ImagePath">
+                <ScalarProperty Name="ImgPathID" ColumnName="ImgPathID" />
                 <ScalarProperty Name="PostID" ColumnName="PostID" />
                 <ScalarProperty Name="ImgPath" ColumnName="ImgPath" />
               </MappingFragment>

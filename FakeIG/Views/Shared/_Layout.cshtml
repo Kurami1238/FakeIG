@@ -43,19 +43,19 @@
                 @{
                     if (@ViewBag.Member != null)
                     {
-                            <ul class="navbar-nav navbar-nav-scroll d-flex">
-                                <li class="nav-item dropdown">
-                                    <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <img src="@((@ViewBag.Member.PicPath)!= null ?@ViewBag.Member.PicPath :"/Images/defaltpic.jpg")" width="30" height="30" class="align-bottom" />
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuLink">
-                                        <li><a class="dropdown-item" href="#">Action</a></li>
-                                        <li><a class="dropdown-item" href="#">Another action</a></li>
-                                        <li><hr class="dropdown-divider"></li>
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                    </ul>
-                                </li>
-                            </ul>
+                        <ul class="navbar-nav navbar-nav-scroll d-flex">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <img src="@((@ViewBag.Member.PicPath)!= null ?@ViewBag.Member.PicPath :"/Images/defaltpic.jpg")" width="30" height="30" class="align-bottom" />
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuLink">
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     }
                     else
                     {
@@ -65,41 +65,6 @@
             </div>
         </div>
     </nav>
-    @*<div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-
-                    </button>
-                    @Html.ActionLink("應用程式名稱", "Index", "Main", new { area = "" }, new { @class = "navbar-brand" })
-                </div>
-                <div class="navbar-collapse collapse">
-                    <ul class="nav navbar-nav">
-                        <li>@Html.ActionLink("首頁", "Index", "Main")</li>
-                        <li>@Html.ActionLink("新增貼文", "Create", "Post")</li>
-                        <li>@Html.ActionLink("All", "Index", "Main")</li>
-                    </ul>
-                </div>
-                @{
-                    if (@ViewBag.Member != null)
-                    {
-                        <div class="d-flex" style="border:1px #ffffff">
-                            <img src="@ViewBag.Member.PicPath" style="height:5px" />
-                        </div>
-                    }
-                    else
-                    {
-                        <div class="d-flex" style="border:1px #ffffff">
-                            <input type="button" value="登入" onclick="location.href='/Member/Login'" class="btn" />
-                        </div>
-                    }
-                }
-            </div>
-        </div>*@
     <div class="container body-content ">
         @RenderBody()
         <hr />
@@ -109,7 +74,10 @@
     </div>
 
     @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+    @*@Scripts.Render("~/bundles/axios")*@
+    <script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
+    <script type="text/javascript" src="~/Scripts/axios.js"></script>
+    @*@Scripts.Render("~/bundles/bootstrap")*@
     @RenderSection("scripts", required: false)
 </body>
 </html>

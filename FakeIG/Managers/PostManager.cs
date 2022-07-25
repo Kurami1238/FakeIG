@@ -12,29 +12,34 @@ namespace FakeIG.Managers
 
         public List<PostAndMember> DisplayPostList(Member member, int pageSize)
         {
-            var postList = _db.Post
+            var postListMoto = _db.Post
+                .Where(m => m.PointID == null)
                 .OrderByDescending(m => m.CreateTime)
                 .Take(pageSize).ToList();
+            List<Post> postList = postListMoto;
             var PAMList = new List<PostAndMember>();
             for (int i = 0; i < postList.Count; i++)
             {
                 // 找出文章作者圖片及暱稱 
-                var postMember = _db.Member.Where(m => m.MemberID == postList[i].MemberID).FirstOrDefault();
+                var postMember = _db.Member.ToList().Where(m => m.MemberID == postList[i].MemberID).FirstOrDefault();
+                //var postMember = (from m in _db.Member
+                //                 where m.MemberID == postList[i].MemberID
+                //                 select m);
                 // 找出文章回文
-                var pointList = _db.Post.Where(m => m.PointID == postList[i].PostID).ToList();
+                var pointList = _db.Post.ToList().Where(m => m.PointID == postList[i].PostID).ToList();
                 // 看此登錄帳號有無按讚此文章
-                var postYes = _db.NiceList.Where(m => m.MemberID == member.MemberID && m.PostID == postList[i].PostID).FirstOrDefault();
+                var postYes = _db.NiceList.ToList().Where(m => m.MemberID == member.MemberID && m.PostID == postList[i].PostID).FirstOrDefault();
                 // 找此文章圖片
-                var postImgPathList = _db.ImagePath.Where(m => m.PostID == postList[i].PostID).ToList();
+                var postImgPathList = _db.ImagePath.ToList().Where(m => m.PostID == postList[i].PostID).ToList();
                 var pointPAMList = new List<PostAndMember>();
-                if (pointList.Count > 0)
+                if (pointList.Count > 0)       
                 {
                     foreach (var item in pointList)
                     {
                         // 文章回文加上回文作者圖片及暱稱
                         // 回文沒有圖片
-                        var pointMember = _db.Member.Where(m => m.MemberID == item.MemberID).FirstOrDefault();
-                        var pointYes = _db.NiceList.Where(m => m.MemberID == member.MemberID && m.PostID == item.PostID).FirstOrDefault();
+                        var pointMember = _db.Member.ToList().Where(m => m.MemberID == item.MemberID).FirstOrDefault();
+                        var pointYes = _db.NiceList.ToList().Where(m => m.MemberID == member.MemberID && m.PostID == item.PostID).FirstOrDefault();
                         var pointPAM = new PostAndMember()
                         {
                             PostID = item.PostID,
@@ -82,7 +87,7 @@ namespace FakeIG.Managers
             // 找出文章回文
             var pointList = _db.Post.Where(m => m.PointID == post.PostID).ToList();
             // 看此登錄帳號有無按讚此文章
-            var postYes = _db.NiceList.Where(m => m.MemberID == member.MemberID && m.PostID == post.PostID).FirstOrDefault();
+            var postYes = _db.NiceList.ToList().Where(m => m.MemberID == member.MemberID && m.PostID == post.PostID).FirstOrDefault();
             // 找此文章圖片
             var postImgPathList = _db.ImagePath.Where(m => m.PostID == post.PostID).ToList();
             var pointPAMList = new List<PostAndMember>();
@@ -92,8 +97,8 @@ namespace FakeIG.Managers
                 {
                     // 文章回文加上回文作者圖片及暱稱
                     // 回文沒有圖片
-                    var pointMember = _db.Member.Where(m => m.MemberID == item.MemberID).FirstOrDefault();
-                    var pointYes = _db.NiceList.Where(m => m.MemberID == member.MemberID && m.PostID == item.PostID).FirstOrDefault();
+                    var pointMember = _db.Member.ToList().Where(m => m.MemberID == item.MemberID).FirstOrDefault();
+                    var pointYes = _db.NiceList.ToList().Where(m => m.MemberID == member.MemberID && m.PostID == item.PostID).FirstOrDefault();
                     var pointPAM = new PostAndMember()
                     {
                         PostID = item.PostID,

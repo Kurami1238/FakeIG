@@ -29,6 +29,7 @@ namespace FakeIG.Controllers
                 {
                     member.MemberID = Guid.NewGuid();
                     member.CreateTime = DateTime.Now;
+                    member.PicPath = "/Images/defaltpic.jpg";
                     _db.Member.Add(member);
                     _db.SaveChanges();
                     ViewBag.MemberAcc = member.Account;
@@ -55,8 +56,8 @@ namespace FakeIG.Controllers
         {
             var result = _db.Member.Where(m => m.Account == member.Account && m.Password == member.Password).FirstOrDefault();
             if (result != null)
-            {
-                Session["Member"] = member;
+              {
+                Session["Member"] = result;
                 FormsAuthentication.RedirectFromLoginPage("User", true);
                 return RedirectToAction("Index","Main");
             }

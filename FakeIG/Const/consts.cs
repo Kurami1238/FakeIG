@@ -9,7 +9,7 @@ namespace FakeIG.Const
     {
         public const int pageSize = 10;
 
-        public const string folderPath = "~/FileDownload/PostContent/";
+        public const string folderPath = "/FileDownload/PostContent/";
         //public int pageSize { get; }
         //public consts()
         //{

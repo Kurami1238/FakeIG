@@ -197,8 +197,11 @@
     <Content Include="Images\brand.png" />
     <Content Include="Images\brand2.png" />
     <Content Include="Images\defaltpic.jpg" />
+    <Content Include="Images\favorite.png" />
     <Content Include="Images\home.png" />
+    <Content Include="Images\like.png" />
     <Content Include="Images\message.png" />
+    <Content Include="Images\share.png" />
     <Content Include="Models\FakeIGModelFromData.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>FakeIGModelFromData.edmx</DependentUpon>
@@ -209,6 +212,7 @@
       <DependentUpon>FakeIGModelFromData.edmx</DependentUpon>
       <LastGenOutput>FakeIGModelFromData.cs</LastGenOutput>
     </Content>
+    <Content Include="Scripts\axios.js" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
@@ -272,7 +276,9 @@
     <Content Include="Views\Post\Create.cshtml" />
     <Content Include="Views\Post\Display.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="API\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
