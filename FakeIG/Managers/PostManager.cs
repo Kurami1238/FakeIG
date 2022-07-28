@@ -29,6 +29,8 @@ namespace FakeIG.Managers
                 var pointList = _db.Post.ToList().Where(m => m.PointID == postList[i].PostID).ToList();
                 // 看此登錄帳號有無按讚此文章
                 var postYes = _db.NiceList.ToList().Where(m => m.MemberID == member.MemberID && m.PostID == postList[i].PostID).FirstOrDefault();
+                // 找此文章讚數
+                var postNice = _db.NiceList.ToList().Where(m => m.PostID == postList[i].PostID && m.Yes == true).Count();
                 // 找此文章圖片
                 var postImgPathList = _db.ImagePath.ToList().Where(m => m.PostID == postList[i].PostID).ToList();
                 var pointPAMList = new List<PostAndMember>();
@@ -40,6 +42,10 @@ namespace FakeIG.Managers
                         // 回文沒有圖片
                         var pointMember = _db.Member.ToList().Where(m => m.MemberID == item.MemberID).FirstOrDefault();
                         var pointYes = _db.NiceList.ToList().Where(m => m.MemberID == member.MemberID && m.PostID == item.PostID).FirstOrDefault();
+
+                        // 找此文章讚數
+                        var pointNice = _db.NiceList.ToList().Where(m => m.PostID == item.PostID && m.Yes == true).Count();
+
                         var pointPAM = new PostAndMember()
                         {
                             PostID = item.PostID,
@@ -48,7 +54,7 @@ namespace FakeIG.Managers
                             CreateTime = item.CreateTime,
                             LastEditTime = item.LastEditTime,
                             Contents = item.Contents,
-                            Nice = item.Nice,
+                            Nice = pointNice,
                             Name = pointMember.Name,
                             PicPath = pointMember.PicPath,
                             Yes = (pointYes != null) ? pointYes.Yes : false
@@ -65,7 +71,7 @@ namespace FakeIG.Managers
                     CreateTime = postList[i].CreateTime,
                     LastEditTime = postList[i].LastEditTime,
                     Contents = postList[i].Contents,
-                    Nice = postList[i].Nice,
+                    Nice = postNice,
                     ImgPathList = postImgPathList,
                     Name = postMember.Name,
                     PicPath = postMember.PicPath,
@@ -88,6 +94,8 @@ namespace FakeIG.Managers
             var pointList = _db.Post.Where(m => m.PointID == post.PostID).ToList();
             // 看此登錄帳號有無按讚此文章
             var postYes = _db.NiceList.ToList().Where(m => m.MemberID == member.MemberID && m.PostID == post.PostID).FirstOrDefault();
+            // 找此文章讚數
+            var postNice = _db.NiceList.ToList().Where(m => m.PostID == post.PostID && m.Yes == true).Count();
             // 找此文章圖片
             var postImgPathList = _db.ImagePath.Where(m => m.PostID == post.PostID).ToList();
             var pointPAMList = new List<PostAndMember>();
@@ -99,6 +107,9 @@ namespace FakeIG.Managers
                     // 回文沒有圖片
                     var pointMember = _db.Member.ToList().Where(m => m.MemberID == item.MemberID).FirstOrDefault();
                     var pointYes = _db.NiceList.ToList().Where(m => m.MemberID == member.MemberID && m.PostID == item.PostID).FirstOrDefault();
+                    // 找此文章讚數
+                    var pointNice = _db.NiceList.ToList().Where(m => m.PostID == item.PostID && m.Yes == true).Count();
+
                     var pointPAM = new PostAndMember()
                     {
                         PostID = item.PostID,
@@ -107,7 +118,7 @@ namespace FakeIG.Managers
                         CreateTime = item.CreateTime,
                         LastEditTime = item.LastEditTime,
                         Contents = item.Contents,
-                        Nice = item.Nice,
+                        Nice = pointNice,
                         Name = pointMember.Name,
                         PicPath = pointMember.PicPath,
                         Yes = (pointYes != null) ? pointYes.Yes : false
@@ -124,7 +135,7 @@ namespace FakeIG.Managers
                 CreateTime = post.CreateTime,
                 LastEditTime = post.LastEditTime,
                 Contents = post.Contents,
-                Nice = post.Nice,
+                Nice = postNice,
                 ImgPathList = postImgPathList,
                 Name = postMember.Name,
                 PicPath = postMember.PicPath,

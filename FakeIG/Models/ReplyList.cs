@@ -12,12 +12,11 @@ namespace FakeIG.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class NiceList
+    public partial class ReplyList
     {
         public System.Guid MemberID { get; set; }
         public System.Guid PostID { get; set; }
-        public bool Yes { get; set; }
-        public bool Readed { get; set; }
         public System.Guid PostMemberID { get; set; }
+        public bool Readed { get; set; }
     }
 }

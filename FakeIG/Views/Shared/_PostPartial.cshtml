@@ -4,10 +4,10 @@
 }
 
 <div class="col-12 col-md-12" style="margin-top:10px; ">
-    <div class="card" style="width: 470px; border:1px solid #515151; border-radius: 10px; ">
+    <div class="card" style="width: 470px; border:1px solid #515151; border-radius: 10px; background-color:#1b1b1b">
         <div>
             <div style="margin:15px;">
-                <img src="@Model.PicPath" class="img-circle col-2 col-md-2" style="height:30px;width:30px;border-radius:50%;" />
+                <img src="@Model.PicPath" class="img-circle col-2 col-md-2 picRight" style="height:30px;width:30px;border-radius:50%;" />
                 <span>@Model.Name</span>
             </div>
             <div>
@@ -60,8 +60,17 @@
             </div>
             <div style="margin-left:10px;">
                 <div>
-                    <button class="btn" type="button">
-                        <img src="~/Images/like.png" width="25" height="25" class="align-bottom" />
+                    <button class="btn" type="button" onclick="likePost('@Model.PostID', '@ViewBag.Member.MemberID', '@Model.MemberID');">
+                        @{
+                            if (Model.Yes == true)
+                            {
+                                <img src="~/Images/favorite.png" width="25" height="25" class="align-bottom" id="@Model.PostID" />
+                            }
+                            else
+                            {
+                                <img src="~/Images/like.png" width="25" height="25" class="align-bottom" id="@Model.PostID" />
+                            }
+                        }
                     </button>
                     <button class="btn" type="button" for="reply">
                         <img src="~/Images/message.png" width="25" height="25" class="align-bottom" />
@@ -74,9 +83,18 @@
                     <p>@Model.Nice 個讚</p>
                 </div>
                 <div>
-                    <a href="/Post/Display?postID=@postID">
-                        <p>觀看 @Model.PointList.Count 則留言</p>
-                    </a>
+                    @{
+                        if (@Model.PointList.Count > 0)
+                        {
+                            <a href="/Post/Display?postID=@postID">
+                                <p>觀看 @Model.PointList.Count 則留言</p>
+                            </a>
+                        }
+                        else
+                        {
+                            <p>目前 @Model.PointList.Count 則留言</p>
+                        }
+                    }
                 </div>
                 <div>
                     <a href="/Post/Display?postID=@postID">
@@ -91,7 +109,8 @@
                         <button class="btn btn-outline-secondary" type="button" id="button-addon1">☺</button>
                         <input type="text" class="form-control" name="reply" id="reply" placeholder="留言.." aria-label="" aria-describedby="button-addon1">
                         <input type="hidden" name="pointID" value="@Model.PostID" />
-                        <input class="btn" type="submit" value="投稿" />
+                        <input type="hidden" name="postMemberID" value="@Model.MemberID" />
+                        <input class="btn" type="submit" value="投稿" style="color:azure" />
                     </div>
                 </form>
             </div>

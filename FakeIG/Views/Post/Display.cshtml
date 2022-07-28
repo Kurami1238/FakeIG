@@ -83,8 +83,17 @@
                                 }
                             </div>
                             <div class="col-1 col-md-1 col-sm-1" style="float:left;">
-                                <button class="btn" type="button">
-                                    <img src="~/Images/like.png" width="20" height="20" class="align-bottom" />
+                                <button class="btn" type="button" onclick="likePost('@item.PostID', '@ViewBag.Member.MemberID', '@item.MemberID');">
+                                    @{
+                                        if (item.Yes == true)
+                                        {
+                                            <img src="~/Images/favorite.png" width="20" height="20" class="align-bottom" id="@item.PostID" />
+                                        }
+                                        else
+                                        {
+                                            <img src="~/Images/like.png" width="20" height="20" class="align-bottom" id="@item.PostID" />
+                                        }
+                                    }
                                 </button>
                             </div>
                         </div>
@@ -94,8 +103,17 @@
             }
         </div>
         <div>
-            <button class="btn" type="button" onclick="function likePost(@ViewBag.Member.MemberID,@Model.PAM.PostID);">
-                <img src="~/Images/like.png" width="25" height="25" class="align-bottom" />
+            <button class="btn" type="button" onclick="likePost('@Model.PAM.PostID', '@ViewBag.Member.MemberID', '@Model.PAM.MemberID');">
+                @{
+                    if (Model.PAM.Yes == true)
+                    {
+                        <img src="~/Images/favorite.png" id="@Model.PAM.PostID" width="25" height="25" class="align-bottom" />
+                    }
+                    else
+                    {
+                        <img src="~/Images/like.png" id="@Model.PAM.PostID" width="25" height="25" class="align-bottom" />
+                    }
+                }
             </button>
             <button class="btn" type="button" >
                 <img src="~/Images/message.png" width="25" height="25" class="align-bottom" for="reply"/>
@@ -119,7 +137,8 @@
                     <button class="btn btn-outline-secondary" type="button" id="button-addon1">☺</button>
                     <input type="text" class="form-control" name="reply" id="reply" placeholder="留言.." aria-label="" aria-describedby="button-addon1">
                     <input type="hidden" name="pointID" value="@Model.PAM.PostID" />
-                    <input class="btn" type="submit" value="投稿" />
+                    <input type="hidden" name="postMemberID" value="@Model.PAM.MemberID" />
+                    <input class="btn" type="submit" value="投稿" style="color:azure" />
                 </div>
             </form>
         </div>
@@ -128,16 +147,41 @@
 
 <script>
     //const axios = require('axios').default;
-    function likePost(postID, memberID) {
+    function likePost(postID, memberID, postMemberID) {
         axios.post('/Post/Like/', {
             postID: postID,
-            memberID: memberID
+            memberID: memberID,
+            postMemberID: postMemberID,
             })
             .then(function (res) {
                 console.log(res);
+                if (res.data == "Nice") {
+                    $(`#${postID}`).attr("src", "/Images/favorite.png")
+                }
+                else {
+                    $(`#${postID}`).attr("src", "/Images/like.png")
+                }
             })
             .catch(function (err) {
                 console.log(err)
             });
     }
+    //function likePost(postID, memberID) {
+    //    if (postID != null && memberID != null) {
+    //        var postData = { postID: postID, memberID: memberID }
+    //        $.ajax({
+    //            url: "/Post/Like",
+    //            method: "POST",
+    //            data: postData,
+    //            dataType: "json",
+    //            success: function (henzi) {
+    //                console.log(henzi);
+    //            },
+    //            error: function (henzi) {
+    //                console.log(henzi);
+    //                alert("通訊失敗，請聯絡管理員。")
+    //            }
+    //        });
+    //    }
+    //}
 </script>

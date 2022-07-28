@@ -67,5 +67,14 @@ namespace FakeIG.Controllers
                 return View();
             }
         }
+
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            Session["Member"] = null;
+            return RedirectToAction("Login");
+        }
+
+        
     }
 }

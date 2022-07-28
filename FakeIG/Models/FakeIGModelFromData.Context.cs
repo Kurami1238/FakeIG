@@ -29,5 +29,6 @@ namespace FakeIG.Models
         public virtual DbSet<Member> Member { get; set; }
         public virtual DbSet<NiceList> NiceList { get; set; }
         public virtual DbSet<Post> Post { get; set; }
+        public virtual DbSet<ReplyList> ReplyList { get; set; }
     }
 }

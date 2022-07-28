@@ -46,13 +46,14 @@
                         <ul class="navbar-nav navbar-nav-scroll d-flex">
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="dropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <img src="@((@ViewBag.Member.PicPath)!= null ?@ViewBag.Member.PicPath :"/Images/defaltpic.jpg")" width="30" height="30" class="align-bottom" />
+                                    <img src="@((@ViewBag.Member.PicPath) != null ? @ViewBag.Member.PicPath : "/Images/defaltpic.jpg")" width="30" height="30" class="align-bottom" />
+                                    <input type="hidden" id="scriptMember" class="scriptMember" value="@ViewBag.Member.MemberID" />
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="dropdownMenuLink">
                                     <li><a class="dropdown-item" href="#">Action</a></li>
                                     <li><a class="dropdown-item" href="#">Another action</a></li>
                                     <li><hr class="dropdown-divider"></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    <li><a class="dropdown-item" href="/Member/Logout">登出</a></li>
                                 </ul>
                             </li>
                         </ul>
@@ -62,6 +63,7 @@
                         <input type="button" value="登入" onclick="location.href='/Member/Login'" class="btn btn-dark" />
                     }
                 }
+
             </div>
         </div>
     </nav>
@@ -69,15 +71,206 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - 我的 ASP.NET 應用程式</p>
+            <p>&copy; @DateTime.Now.Year - FakeIG</p>
         </footer>
     </div>
 
+    @*<div class="toast toast-container align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    <a href="/Post/Display?postID=">
+                        <img src="" class="img-circle col-2 col-md-2 picRight" style="height:30px;width:30px;border-radius:50%;" />
+                        <span> 給了你一個讚</span>
+                    </a>
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+
+        <div class="toast toast-container align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                        <a href="/Post/Display?postID=">
+                            <img src="" class="img-circle picRight" style="height:30px;width:30px;border-radius:50%;" />
+                        </a>
+                    <span>讚了你</span>
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>*@
+
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5; ">
+        <div class="toast toastNice align-items-center" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #1b1b1b;">
+            <div class="d-flex">
+                <div class="toast-body" id="toastNiceBody">
+                    HIHII
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 5;">
+        <div class="toast toastReply align-items-center" role="alert" aria-live="assertive" aria-atomic="true" style="background-color: #1b1b1b;">
+            <div class="d-flex">
+                <div class="toast-body" id="toastReplyBody">
+                    YOYOYO
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+    @*<div class="toast align-items-center" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    Hello, world! This is a toast message.
+                </div>
+                <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>*@
     @Scripts.Render("~/bundles/jquery")
     @*@Scripts.Render("~/bundles/axios")*@
     <script type="text/javascript" src="~/Scripts/bootstrap.js"></script>
     <script type="text/javascript" src="~/Scripts/axios.js"></script>
     @*@Scripts.Render("~/bundles/bootstrap")*@
     @RenderSection("scripts", required: false)
+
+    <script>
+        //document.querySelectorAll('.toast').forEach(function (item) {
+        //    const myNode = new bootstrap.Toast(item, {
+        //        animation: true, //是否fade特效
+        //        autohide: true, //是否自動消失
+        //        delay: 10000 //停留多久才消失
+        //    });
+        //    //item.addEventListener('show.bs.toast', function (e) {
+        //    //    console.log("顯示中", e);
+        //    //});
+        //    //item.addEventListener('shown.bs.toast', function (e) {
+        //    //    console.log("已顯示", e);
+        //    //});
+        //    //item.addEventListener('hide.bs.toast', function (e) {
+        //    //    console.log("隱藏中", e);
+        //    //});
+        //    //item.addEventListener('hidden.bs.toast', function (e) {
+        //    //    console.log("已隱藏", e);
+        //    //});
+        //    //myNode.show();
+        //});
+        function callToast(toastName) {
+            document.querySelectorAll(`.${toastName}`).forEach(function (item) {
+                const toastList = new bootstrap.Toast(item, {
+                    animation: true, //是否fade特效
+                    autohide: true, //是否自動消失
+                    delay: 3000000 //停留多久才消失
+                });
+                toastList.show();
+            });
+        }
+
+        var memberID = $(".scriptMember").val();
+
+        $(document).ready(function () {
+            console.log(memberID);
+            if (memberID != null) {
+                niceToast(memberID);
+                replyToast(memberID);
+            }
+        })
+
+        function niceToast(memberID) {
+            axios.post('/Post/ToastsNice/', {
+                memberID: memberID,
+            })
+                .then(function (res) {
+                    console.log(res);
+                    if (res.data != '') {
+                        $("#toastNiceBody").text('');
+                        if (res.data.length == 1) {
+                            $("#toastNiceBody").append(
+                                `
+                                    <img src="${res.data[0].PicPath}" class="img-circle picRight" style="height:30px;width:30px;border-radius:50%;" />
+                                    <span> ${res.data[0].Name}給了你一個讚</span>
+                                `)
+                        }
+                        else if (res.data.length > 1) {
+                            var toastbody = "";
+                            for (var i = 0; i < res.data.length ; i++){
+                                toastbody += 
+                                   `
+                                       <img src="${res.data[i].PicPath}" class="img-circle picRight" style="height:30px;width:30px;border-radius:50%;" />
+                                   `;
+                            }
+                            toastbody += `<span> ❤，得到${res.data.length}個❤</span>`;
+                            $("#toastNiceBody").append(toastbody);
+                        }
+                        callToast("toastNice");
+                    }
+                })
+                .catch(function (err) {
+                    console.log(err)
+                });
+        }
+        function replyToast(memberID) {
+            axios.post('/Post/ToastsReply/', {
+                memberID: memberID,
+            })
+                .then(function (res) {
+                    console.log(res);
+                    if (res.data != '') {
+                        $("#toastReplyBody").text('');
+                        if (res.data.length == 1) {
+                            $("#toastReplyBody").append(
+                                `
+                                    <img src="${res.data[0].PicPath}" class="img-circle picRight" style="height:30px;width:30px;border-radius:50%;" />
+                                    <span class="picRight">${res.data[0].Name}</span>
+                                    <a href="/Post/Display?postID=${res.data[0].PointID}">
+                                        <span>${res.data[0].Contents}</span>
+                                    </a>    
+                                `)
+                        }
+                        else if (res.data.length > 1) {
+                           
+                            for (var i = 0; i < res.data.length; i++) {
+                                if (i == 0) {
+                                    $("#toastReplyBody").append(
+                                        `
+                                          <img src="${res.data[0].PicPath}" class="img-circle picRight" style="height:30px;width:30px;border-radius:50%;" />
+                                          <span class="picRight">${res.data[0].Name}</span>
+                                          <a href="/Post/Display?postID=${res.data[0].PointID}">
+                                              <span>說：${res.data[0].Contents}</span>
+                                          </a>    
+                                        `)
+                                }
+                                if (i > 0) {
+                                         // 複製toast
+                                    var rpt = $(".toastReply").eq(0).clone(true);
+                                    var toastbody = "";
+
+                                    toastbody +=
+                                        `
+                                       <img src="${res.data[i].PicPath}" class="img-circle picRight" style="height:30px;width:30px;border-radius:50%;" />
+                                       <span class="picRight">${res.data[i].Name}</span>
+                                       <a href="/Post/Display?postID=${res.data[i].PointID}">
+                                           <span>說：${res.data[i].Contents}</span>
+                                       </a>
+                                   `;
+                                    $("#toastReplyBody", rpt).html(toastbody);
+
+                                    $(".toast-container").append(rpt);
+                                }
+                                
+                            }
+                        }
+                        callToast("toastReply");
+                    }
+                })
+                .catch(function (err) {
+                    console.log(err)
+                });
+        }
+        
+
+    </script>
+
+
 </body>
 </html>

@@ -1,8 +1,21 @@
-﻿div{
+﻿div {
     /*background-color: rgb(0 0 0 / 0.93);*/
     color: azure;
+    
 }
-
+/*@media (prefers-color-scheme: dark) {
+    .align-bottom{
+        filter: invert(100%)
+    }
+}*/
+@media (prefers-color-scheme: light) {
+    .align-bottom {
+        filter: invert(100%)
+    }
+}
+toast {
+    background-color: #1b1b1b
+}
 body {
     padding-top: 10px;
     padding-bottom: 20px;

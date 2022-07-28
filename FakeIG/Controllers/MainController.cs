@@ -19,6 +19,10 @@ namespace FakeIG.Controllers
         public ActionResult Index()
         {
             Member member = (Member)Session["Member"];
+            if (member == null)
+            {
+                return View("Login", "Member");
+            }
             // 找最近更新的文章
             //var postList = _db.Post
             //    .OrderByDescending(m => m.CreateTime)

@@ -30,11 +30,10 @@
           <Key>
             <PropertyRef Name="MemberID" />
             <PropertyRef Name="PostID" />
-            <PropertyRef Name="Yes" />
-            <PropertyRef Name="Readed" />
           </Key>
           <Property Name="MemberID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="PostID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PostMemberID" Type="uniqueidentifier" Nullable="false" />
           <Property Name="Yes" Type="bit" Nullable="false" />
           <Property Name="Readed" Type="bit" Nullable="false" />
         </EntityType>
@@ -48,13 +47,23 @@
           <Property Name="CreateTime" Type="datetime" Nullable="false" />
           <Property Name="LastEditTime" Type="datetime" Nullable="false" />
           <Property Name="Contents" Type="varchar" MaxLength="200" Nullable="false" />
-          <Property Name="Nice" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReplyList">
+          <Key>
+            <PropertyRef Name="MemberID" />
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="MemberID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PostID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="PostMemberID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Readed" Type="bit" Nullable="false" />
         </EntityType>
         <EntityContainer Name="FakeIGModelStoreContainer">
           <EntitySet Name="ImagePath" EntityType="Self.ImagePath" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Member" EntityType="Self.Member" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NiceList" EntityType="Self.NiceList" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Post" EntityType="Self.Post" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReplyList" EntityType="Self.ReplyList" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
     <!-- CSDL content -->
@@ -85,13 +94,12 @@
           <Key>
             <PropertyRef Name="MemberID" />
             <PropertyRef Name="PostID" />
-            <PropertyRef Name="Yes" />
-            <PropertyRef Name="Readed" />
           </Key>
           <Property Name="MemberID" Type="Guid" Nullable="false" />
           <Property Name="PostID" Type="Guid" Nullable="false" />
           <Property Name="Yes" Type="Boolean" Nullable="false" />
           <Property Name="Readed" Type="Boolean" Nullable="false" />
+          <Property Name="PostMemberID" Type="Guid" Nullable="false" />
         </EntityType>
         <EntityType Name="Post">
           <Key>
@@ -103,14 +111,24 @@
           <Property Name="CreateTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="LastEditTime" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="Contents" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="Nice" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityContainer Name="FakeIGEntities2" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="ImagePath" EntityType="Self.ImagePath" />
           <EntitySet Name="Member" EntityType="Self.Member" />
           <EntitySet Name="NiceList" EntityType="Self.NiceList" />
           <EntitySet Name="Post" EntityType="Self.Post" />
+          <EntitySet Name="ReplyList" EntityType="FakeIGModel.ReplyList" />
         </EntityContainer>
+        <EntityType Name="ReplyList">
+          <Key>
+            <PropertyRef Name="MemberID" />
+            <PropertyRef Name="PostID" />
+          </Key>
+          <Property Name="MemberID" Type="Guid" Nullable="false" />
+          <Property Name="PostID" Type="Guid" Nullable="false" />
+          <Property Name="PostMemberID" Type="Guid" Nullable="false" />
+          <Property Name="Readed" Type="Boolean" Nullable="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -143,6 +161,7 @@
           <EntitySetMapping Name="NiceList">
             <EntityTypeMapping TypeName="FakeIGModel.NiceList">
               <MappingFragment StoreEntitySet="NiceList">
+                <ScalarProperty Name="PostMemberID" ColumnName="PostMemberID" />
                 <ScalarProperty Name="MemberID" ColumnName="MemberID" />
                 <ScalarProperty Name="PostID" ColumnName="PostID" />
                 <ScalarProperty Name="Yes" ColumnName="Yes" />
@@ -159,7 +178,16 @@
                 <ScalarProperty Name="CreateTime" ColumnName="CreateTime" />
                 <ScalarProperty Name="LastEditTime" ColumnName="LastEditTime" />
                 <ScalarProperty Name="Contents" ColumnName="Contents" />
-                <ScalarProperty Name="Nice" ColumnName="Nice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReplyList">
+            <EntityTypeMapping TypeName="FakeIGModel.ReplyList">
+              <MappingFragment StoreEntitySet="ReplyList">
+                <ScalarProperty Name="Readed" ColumnName="Readed" />
+                <ScalarProperty Name="PostMemberID" ColumnName="PostMemberID" />
+                <ScalarProperty Name="PostID" ColumnName="PostID" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

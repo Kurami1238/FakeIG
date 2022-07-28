@@ -20,6 +20,5 @@ namespace FakeIG.Models
         public System.DateTime CreateTime { get; set; }
         public System.DateTime LastEditTime { get; set; }
         public string Contents { get; set; }
-        public int Nice { get; set; }
     }
 }

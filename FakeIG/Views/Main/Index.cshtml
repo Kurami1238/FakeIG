@@ -21,3 +21,24 @@
     }
 }
 
+<script>
+    function likePost(postID, memberID, postMemberID) {
+        axios.post('/Post/Like/', {
+            postID: postID,
+            memberID: memberID,
+            postMemberID: postMemberID
+        })
+            .then(function (res) {
+                console.log(res);
+                if (res.data == "Nice") {
+                    $(`#${postID}`).attr("src", "/Images/favorite.png")
+                }
+                else {
+                    $(`#${postID}`).attr("src", "/Images/like.png")
+                } 
+            })
+            .catch(function (err) {
+                console.log(err)
+            });
+    }
+</script>
