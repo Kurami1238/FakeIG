@@ -9,15 +9,20 @@
     if (ViewBag.ImgPath == null)
     {
 
-        <form class="form-horizontal" method="post" action="/Post/CreateImg" enctype="multipart/form-data">
-            <div>
-                <p>上傳檔案 1:<input type="file" name="photo" /></p>
-                <p>上傳檔案 2:<input type="file" name="photo" /></p>
-                <p>上傳檔案 3:<input type="file" name="photo" /></p>
-                <input type="submit" value="檔案上傳" />
-            </div>
+    <form class="form-horizontal" method="post" action="/Post/CreateImg" enctype="multipart/form-data">
+        <div>
+            <p>上傳檔案 1:<input type="file" name="photo" /></p>
+            <p>上傳檔案 2:<input type="file" name="photo" /></p>
+            <p>上傳檔案 3:<input type="file" name="photo" /></p>
+            <input type="submit" value="檔案上傳" />
+        </div>
+        @{ if (ViewBag.Msg != null)
+            {
+                <p>@ViewBag.Msg</p>
+            }
 
-        </form>
+        }
+    </form>
     }
     if (ViewBag.ImgPath != null)
     {

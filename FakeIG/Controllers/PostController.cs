@@ -1,5 +1,7 @@
 ﻿using FakeIG.Managers;
 using FakeIG.Models;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -69,13 +71,43 @@ namespace FakeIG.Controllers
         [HttpPost]
         public ActionResult CreateImg(HttpPostedFileBase[] photo)
         {
+            // 先檢查檔案是否為圖檔
+            foreach (var item in photo)
+            {
+                if (this.CheckImgFormat(item.FileName) == false)
+                {
+                    ViewBag.Msg = "請上傳圖檔";
+                    return View("Create");
+                }
+            }
+
+            // Azure 儲存體金鑰
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse("DefaultEndpointsProtocol=https;AccountName=fakeiguser;AccountKey=QY0XKemcjtZhdeArIGo4LBoNha2VMdEfGorAIdKv9C+wKYuscYTeK1+6GDkJQHJ+75Gto0kYB6SP+AStcdPcIw==;EndpointSuffix=core.windows.net");
+
+            // Create the blob client.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve a reference to a container. 
+            CloudBlobContainer container = blobClient.GetContainerReference("fakeiguser");
+
+            // Create the container if it doesn't already exist.
+            container.CreateIfNotExists();
+
+            container.SetPermissions(
+                     new BlobContainerPermissions
+                     {
+                         PublicAccess =
+                             BlobContainerPublicAccessType.Blob
+                     });
+
+            // ---------------------------------------------
             // 上傳圖檔名稱
             string fileName = "";
             Random random = new Random((int)DateTime.Now.Ticks);
             Member member = (Member)Session["Member"];
             ViewBag.Member = member;
 
-            string folderPath = Const.consts.folderPath;
+            //string folderPath = Const.consts.folderPath;
             //folderPath = HostingEnvironment.MapPath(folderPath);
             List<string> ImgPath = new List<string>();
             for (int i = 0; i < photo.Length; i++)
@@ -85,15 +117,27 @@ namespace FakeIG.Controllers
                 {
                     if (f.ContentLength > 0)
                     {
-                        if (!Directory.Exists(folderPath)) // 假如資料夾不存在，先建立
+                        /*if (!Directory.Exists(folderPath)) // 假如資料夾不存在，先建立
                             Directory.CreateDirectory(folderPath);
                         fileName = "P" + DateTime.Now.ToString("yyyyMMdd_HHmmss_FFFFFF") + "_" + member.Account + "_" + random.Next(100000).ToString("00000") + Path.GetExtension(f.FileName);
-
                         var path = Path.Combine(Server.MapPath($"{folderPath}"), fileName);
                         f.SaveAs(path);
 
                         var viewPath = Path.Combine(folderPath, fileName);
-                        ImgPath.Add(viewPath);
+                        ImgPath.Add(viewPath); */
+
+                        // --------------------------------------------------------------------------
+
+                        fileName = "P" + DateTime.Now.ToString("yyyyMMdd_HHmmss_FFFFFF") + "_" + member.Account + "_" + random.Next(100000).ToString("00000");
+
+                        CloudBlockBlob blockBlob = container.GetBlockBlobReference(fileName);
+
+                        blockBlob.Properties.ContentType = f.ContentType;
+                        blockBlob.UploadFromStream(f.InputStream);
+
+                        var ImgblockBlob = blockBlob.Uri.AbsoluteUri;
+
+                        ImgPath.Add(ImgblockBlob);
                     }
                 }
             }
@@ -255,6 +299,23 @@ namespace FakeIG.Controllers
                 return Json(toastsList);
             }
             return null;
+        }
+
+        private Boolean CheckImgFormat(String fileName)
+        {
+            Boolean flag = false;
+            String fileExtension = Path.GetExtension(fileName).ToLower();
+            String[] allowedExtensions = { ".jpg", ".jpeg", ".png", ".gif", ".bmp" };
+
+            for (int i = 0; i < allowedExtensions.Length; i++)
+            {
+                if (allowedExtensions[i].ToString().Equals(fileExtension))
+                {
+                    flag = true;
+                }
+            }
+
+            return flag;
         }
     }
 }
